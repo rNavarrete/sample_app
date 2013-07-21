@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'spork'
 
+
 Spork.prefork do
   # Loading more in this block will cause your tests to run faster. However,
   # if you change any configuration or code from libraries loaded here, you'll
@@ -11,6 +12,9 @@ Spork.prefork do
   require 'rspec/rails'
   require 'rspec/autorun'
 
+  # Capybara integration
+  require 'capybara/rspec'
+  require 'capybara/rails'
   # Requires supporting ruby files with custom matchers and macros, etc,
   # in spec/support/ and its subdirectories.
   Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
@@ -37,10 +41,21 @@ Spork.prefork do
     # automatically. This will be the default behavior in future versions of
     # rspec-rails.
     config.infer_base_class_for_anonymous_controllers = false
+   
+   config.use_transactional_fixtures = true
+   config.infer_base_class_for_anonymous_controllers = false
+   config.order = "random"
+   # Include path helpers
+   config.include Rails.application.routes.url_helpers
+
+   config.include Capybara::DSL
   end
 end
 
 Spork.each_run do
-  # This code will be run each time you run your specs.
-
+  Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 end
+
+
+
+
