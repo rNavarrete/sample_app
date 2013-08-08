@@ -28,6 +28,7 @@ Spork.prefork do
     # config.mock_with :flexmock
     # config.mock_with :rr
     config.mock_with :rspec
+    config.include Rails.application.routes.url_helpers
 
     # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
     config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -46,11 +47,12 @@ Spork.prefork do
    config.infer_base_class_for_anonymous_controllers = false
    config.order = "random"
    # Include path helpers
-   config.include Rails.application.routes.url_helpers
 
    config.include Capybara::DSL
   end
 end
+
+
 
 Spork.each_run do
   Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
